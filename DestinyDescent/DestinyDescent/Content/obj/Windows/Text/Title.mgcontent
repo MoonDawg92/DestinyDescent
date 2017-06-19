@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>D:/MonoGame/DestinyDescent/DestinyDescent/DestinyDescent/Content/Text/Title.spritefont</SourceFile>
+  <SourceTime>2017-06-06T20:54:26.9044659-05:00</SourceTime>
+  <DestFile>D:/MonoGame/DestinyDescent/DestinyDescent/DestinyDescent/Content/bin/Windows/Text/Title.xnb</DestFile>
+  <DestTime>2017-06-13T20:48:41.5634293-05:00</DestTime>
+  <Importer>FontDescriptionImporter</Importer>
+  <ImporterTime>2017-03-01T09:05:36-06:00</ImporterTime>
+  <Processor>FontDescriptionProcessor</Processor>
+  <ProcessorTime>2017-03-01T09:05:36-06:00</ProcessorTime>
+  <Parameters>
+    <Key>PremultiplyAlpha</Key>
+    <Value>True</Value>
+  </Parameters>
+  <Parameters>
+    <Key>TextureFormat</Key>
+    <Value>Compressed</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

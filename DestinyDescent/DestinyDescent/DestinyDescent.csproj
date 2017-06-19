@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6696E871-8D8E-4A17-8671-D80C8D1B0AD9}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TestGame</RootNamespace>
+    <AssemblyName>TestGame</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MonoGamePlatform>Windows</MonoGamePlatform>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>DD64.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Entities\Ghost.cs" />
+    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\Guardian.cs" />
+    <Compile Include="Entities\Ledge.cs" />
+    <Compile Include="Entities\Text.cs" />
+    <Compile Include="Game1.cs" />
+    <Compile Include="LedgeManager.cs" />
+    <Compile Include="Menu.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Darkness.png" />
+    <Content Include="Content\DarknessBig.png" />
+    <Content Include="Content\DarknessNormal.png" />
+    <Content Include="Content\Ghost.png" />
+    <Content Include="Content\Guardians\Hunter\HunterSheet.png" />
+    <Content Include="Content\Guardians\Hunter\HunterSheetBig.png" />
+    <Content Include="Content\Guardians\Hunter\SingleSprites\Hunter_L1.png" />
+    <Content Include="Content\Guardians\Hunter\SingleSprites\Hunter_L2.png" />
+    <Content Include="Content\Guardians\Hunter\SingleSprites\Hunter_L3.png" />
+    <Content Include="Content\Guardians\Hunter\SingleSprites\Hunter_L4.png" />
+    <Content Include="Content\Guardians\Hunter\SingleSprites\Hunter_LFall.png" />
+    <Content Include="Content\Guardians\Hunter\SingleSprites\Hunter_LStand.png" />
+    <Content Include="Content\Guardians\Hunter\SingleSprites\Hunter_R1.png" />
+    <Content Include="Content\Guardians\Hunter\SingleSprites\Hunter_R2.png" />
+    <Content Include="Content\Guardians\Hunter\SingleSprites\Hunter_R3.png" />
+    <Content Include="Content\Guardians\Hunter\SingleSprites\Hunter_R4.png" />
+    <Content Include="Content\Guardians\Hunter\SingleSprites\Hunter_RFall.png" />
+    <Content Include="Content\Guardians\Hunter\SingleSprites\Hunter_RStand.png" />
+    <Content Include="Content\Guardians\Titan\SingleSprites\Titan_L1.png" />
+    <Content Include="Content\Guardians\Titan\SingleSprites\Titan_L2.png" />
+    <Content Include="Content\Guardians\Titan\SingleSprites\Titan_L3.png" />
+    <Content Include="Content\Guardians\Titan\SingleSprites\Titan_L4.png" />
+    <Content Include="Content\Guardians\Titan\SingleSprites\Titan_LFall.png" />
+    <Content Include="Content\Guardians\Titan\SingleSprites\Titan_LStand.png" />
+    <Content Include="Content\Guardians\Titan\SingleSprites\Titan_R1.png" />
+    <Content Include="Content\Guardians\Titan\SingleSprites\Titan_R2.png" />
+    <Content Include="Content\Guardians\Titan\SingleSprites\Titan_R3.png" />
+    <Content Include="Content\Guardians\Titan\SingleSprites\Titan_R4.png" />
+    <Content Include="Content\Guardians\Titan\SingleSprites\Titan_RFall.png" />
+    <Content Include="Content\Guardians\Titan\SingleSprites\Titan_RStand.png" />
+    <Content Include="Content\Guardians\Titan\TitanSheet.png" />
+    <Content Include="Content\Guardians\Titan\TitanSheetBig.png" />
+    <Content Include="Content\Guardians\Warlock\SingleSprites\Warlock_L1.png" />
+    <Content Include="Content\Guardians\Warlock\SingleSprites\Warlock_L2.png" />
+    <Content Include="Content\Guardians\Warlock\SingleSprites\Warlock_L3.png" />
+    <Content Include="Content\Guardians\Warlock\SingleSprites\Warlock_L4.png" />
+    <Content Include="Content\Guardians\Warlock\SingleSprites\Warlock_LFall.png" />
+    <Content Include="Content\Guardians\Warlock\SingleSprites\Warlock_LStand.png" />
+    <Content Include="Content\Guardians\Warlock\SingleSprites\Warlock_R1.png" />
+    <Content Include="Content\Guardians\Warlock\SingleSprites\Warlock_R2.png" />
+    <Content Include="Content\Guardians\Warlock\SingleSprites\Warlock_R3.png" />
+    <Content Include="Content\Guardians\Warlock\SingleSprites\Warlock_R4.png" />
+    <Content Include="Content\Guardians\Warlock\SingleSprites\Warlock_RFall.png" />
+    <Content Include="Content\Guardians\Warlock\SingleSprites\Warlock_RStand.png" />
+    <Content Include="Content\Guardians\Warlock\WarlockSheet.png" />
+    <Content Include="Content\Guardians\Warlock\WarlockSheetBig.png" />
+    <Content Include="Content\Ledges\Ledge_1.png" />
+    <Content Include="Content\Ledges\Ledge_2.png" />
+    <Content Include="Content\Ledges\Ledge_3.png" />
+    <Content Include="Content\Ledges\Ledge_4.png" />
+    <Content Include="Content\Ledges\Ledge_Edge_L.png" />
+    <Content Include="Content\Ledges\Ledge_Edge_R.png" />
+    <Content Include="Content\MenuBackground.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DD64.ico" />
+    <Content Include="Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="Content\Content.mgcb" />
+    <None Include="app.manifest" />
+    <None Include="Content\DestinyDescentContent.contentproj" />
+    <None Include="Content\Guardians\Hunter\SingleSprites\HunterSheetPSD.psd" />
+    <None Include="Content\Guardians\Titan\SingleSprites\TitanSheetPSD.psd" />
+    <None Include="Content\Guardians\Warlock\SingleSprites\WarlockSheetPSD.psd" />
+    <None Include="Content\Text\Boost.spritefont" />
+    <None Include="Content\Text\ChooseGuardian.spritefont" />
+    <None Include="Content\Text\Creator.spritefont" />
+    <None Include="Content\Text\Disclaimer.spritefont" />
+    <None Include="Content\Text\InstructionsItem.spritefont" />
+    <None Include="Content\Text\MenuItem.spritefont" />
+    <None Include="Content\Text\Score.spritefont" />
+    <None Include="Content\Text\Title.spritefont" />
+    <None Include="Content\Text\Version.spritefont" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

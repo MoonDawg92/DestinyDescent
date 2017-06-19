@@ -1,0 +1,4 @@
+C:\Users\Eric\documents\visual studio 2012\Projects\DestinyDescent\DestinyDescent\DestinyDescentContent\obj\x86\Debug\DestinyDescentContent.contentprojResolveAssemblyReference.cache
+C:\Users\Eric\Documents\Dropbox\DestinyDescent\DestinyDescent\DestinyDescentContent\obj\x86\Debug\DestinyDescentContent.contentprojResolveAssemblyReference.cache
+C:\Users\Eric\Documents\GitHub\Destiny-Descent\DestinyDescent\DestinyDescentContent\obj\x86\Debug\DestinyDescentContent.contentprojResolveAssemblyReference.cache
+C:\Users\MoonDawg\Documents\GitHub\Destiny-Descent\DestinyDescent\DestinyDescentContent\obj\x86\Debug\DestinyDescentContent.contentprojResolveAssemblyReference.cache
