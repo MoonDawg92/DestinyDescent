@@ -9,13 +9,15 @@ namespace DestinyDescent
     /// </summary>
     public class Game1 : Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
+        private Texture2D background;
 
         private int gameWidth;
         private int gameHeight;
 
-        Menu menu;
+        private Menu menu;
+        private Descent descent;
 
         private enum GameState
         {
@@ -33,6 +35,7 @@ namespace DestinyDescent
             Content.RootDirectory = "Content";
 
             this.Window.Title = "Descent of Darkness";
+
         }
 
         /// <summary>
@@ -52,6 +55,8 @@ namespace DestinyDescent
             gameWidth = graphics.GraphicsDevice.Viewport.Width;
             gameHeight = graphics.GraphicsDevice.Viewport.Height;
 
+            background = this.Content.Load<Texture2D>("MenuBackground");
+
             menu = new Menu(this);
 
             base.Initialize();
@@ -66,6 +71,7 @@ namespace DestinyDescent
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            base.LoadContent();
             // TODO: use this.Content to load your game content here
         }
 
@@ -77,28 +83,21 @@ namespace DestinyDescent
         {
             // TODO: Unload any non ContentManager content here
         }
-
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        
         protected override void Update(GameTime gameTime)
         {
-            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            //    Exit();
-
-            // TODO: Add your update logic here
-
             if (gameState == GameState.StartMenu)
             {
                 // Update main menu
                 menu.Update(gameTime);
+                if (menu.activeGame()) gameState = GameState.Playing;
             }
 
             else if (gameState == GameState.Playing)
             {
                 // Update game
+                if (descent == null) descent = new Descent(this, menu.getClassChoice());
+                descent.Update(gameTime);
             }
 
 
@@ -116,6 +115,9 @@ namespace DestinyDescent
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
 
+            // Draw background
+            spriteBatch.Draw(background, Vector2.Zero, Color.White);
+
             if (gameState == GameState.StartMenu)
             {
                 // Draw menu
@@ -125,6 +127,8 @@ namespace DestinyDescent
             else if (gameState == GameState.Playing)
             {
                 // Draw game
+                if (descent == null) descent = new Descent(this, menu.getClassChoice());
+                descent.Draw(gameTime, spriteBatch);
             }
 
             spriteBatch.End();

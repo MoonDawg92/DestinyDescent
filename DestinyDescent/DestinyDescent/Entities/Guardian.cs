@@ -6,10 +6,11 @@ using Microsoft.Xna.Framework.Input;
 
 namespace DestinyDescent.Entities
 {
-    class Guardian : Entity
+    public class Guardian : Entity
     {
         #region Global Declarataions
-        string playerClass;
+        private Game game;
+
         private int speedVar;
         private int gravityVar;
         private int boostTimer;
@@ -20,18 +21,19 @@ namespace DestinyDescent.Entities
         private int xMin;
         private int xMax;
 
-        bool facingRight;
-        bool boosting;
-        bool boostReady;
-        bool falling;
+        private bool facingRight;
+        private bool boosting;
+        private bool boostReady;
+        private bool falling;
 
-        Texture2D spriteSheet;
+        private string playerClass;
+        private Texture2D spriteSheet;
 
-        List<Rectangle> guardianLeft;   // Bounds for sprite sheet
-        List<Rectangle> guardianRight;  // "                     "
+        private List<Rectangle> guardianLeft;   // Bounds for sprite sheet
+        private List<Rectangle> guardianRight;  // "                     "
 
-        KeyboardState oldState;
-        List<Keys> keysPressed;
+        private KeyboardState oldState;
+        private List<Keys> keysPressed;
         #endregion
 
         #region BoundingBox
@@ -45,11 +47,12 @@ namespace DestinyDescent.Entities
         #endregion
 
         #region Constructor
-        public Guardian(Game g, string pClass, int sp, int gr, int width, int height, Texture2D sheet) : base(g, width, height)
+        public Guardian(Game g, string pClass, int width, int height) : base(g, width, height)
         {
-            playerClass = pClass;
-            speedVar = sp;
-            gravityVar = gr;
+            game = g;
+
+            speedVar = 500;
+            gravityVar = 5;
             boostTimer = 0;
             boostCooldown = 0;
             velocity = 0;
@@ -61,29 +64,53 @@ namespace DestinyDescent.Entities
             falling = true;
             guardianLeft = new List<Rectangle>();
             guardianRight = new List<Rectangle>();
-            spriteSheet = sheet;
             keysPressed = new List<Keys>();
             oldState = Keyboard.GetState();
+
+            xMin = 0;
+            xMax = getGameWidth() - getWidth();
+
+            LoadSpritePositions();
+
+            playerClass = pClass;
+
+            LoadContent();
         }
         #endregion
 
-        #region Add Bounds
-        #region Add Left Sprite
-        public void addLeftSprite(Rectangle bounds)
+        #region Load Content
+        private void LoadSpritePositions()
         {
-            guardianLeft.Add(bounds);
-        }
-        #endregion
+            guardianLeft.Add(new Rectangle(0, 52, 50, 52));
+            guardianLeft.Add(new Rectangle(50, 52, 50, 52));
+            guardianLeft.Add(new Rectangle(100, 52, 50, 52));
+            guardianLeft.Add(new Rectangle(150, 52, 50, 52));
+            guardianLeft.Add(new Rectangle(0, 0, 50, 52));
+            guardianLeft.Add(new Rectangle(50, 0, 50, 52));
 
-        #region Add Right Sprite
-        public void addRightSprite(Rectangle bounds)
-        {
-            guardianRight.Add(bounds);
+            guardianRight.Add(new Rectangle(0, 104, 50, 52));
+            guardianRight.Add(new Rectangle(50, 104, 50, 52));
+            guardianRight.Add(new Rectangle(100, 104, 50, 52));
+            guardianRight.Add(new Rectangle(150, 104, 50, 52));
+            guardianRight.Add(new Rectangle(100, 0, 50, 52));
+            guardianRight.Add(new Rectangle(150, 0, 50, 52));
         }
-        #endregion
+
+        protected override void LoadContent()
+        {
+           spriteSheet = game.Content.Load<Texture2D>("Guardians/" + playerClass + "/" + playerClass + "Sheet");
+
+            base.LoadContent();
+        }
         #endregion
 
         #region Get Functions
+        public int getWidth()
+        {
+            // Hard coded to 50 pixel sprite
+            return 50;
+        }
+
         #region Falling
         public bool isFalling()
         {
@@ -169,11 +196,11 @@ namespace DestinyDescent.Entities
         public override void Update(GameTime gameTime)
         {
             KeyboardState newState = Keyboard.GetState();
-            xMin = 0;
-            xMax = getGameWidth() - guardianRight[index].Width; // Get sprite width here
 
             if (speed.X < 0.001 && speed.X > -0.001)
                 changeVelocity(0.0f);
+
+            position += speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             #region Boost Ready Logic
             if (!boostReady)

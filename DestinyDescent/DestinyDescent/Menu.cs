@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace DestinyDescent
 {
-    class Menu : DrawableGameComponent
+    public class Menu : DrawableGameComponent
     {
         #region Global Variables
         private int gameWidth;
@@ -27,8 +27,7 @@ namespace DestinyDescent
         private SpriteFont titleFont;
         private SpriteFont disclaimerFont;
         private SpriteFont creatorFont;
-
-        private Texture2D background;
+        
         private Texture2D logo;
         private Texture2D warlockBigSheet, hunterBigSheet, titanBigSheet;
         private Rectangle[] guardianBigSpritePositions;
@@ -132,7 +131,6 @@ namespace DestinyDescent
         public override void Initialize()
         {
             // Load graphics
-            background = game.Content.Load<Texture2D>("MenuBackground");
             logo = game.Content.Load<Texture2D>("Darkness");
             warlockBigSheet = game.Content.Load<Texture2D>("Guardians/Warlock/WarlockSheetBig");
             hunterBigSheet = game.Content.Load<Texture2D>("Guardians/Hunter/HunterSheetBig");
@@ -349,9 +347,6 @@ namespace DestinyDescent
         #region Draw
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            // Draw background
-            spriteBatch.Draw(background, Vector2.Zero, Color.White);
-
             switch (menuState)
             {
                 case MenuState.MainScreen:
@@ -451,6 +446,36 @@ namespace DestinyDescent
         #region Draw Instructions
         private void DrawInstructions(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            if (guardianPresent && guardianSheet != null)
+            {
+                // Draws Guardians
+                spriteChange += gameTime.ElapsedGameTime;
+
+                if (spriteChange.TotalMilliseconds > 150)
+                {
+                    spriteChange = TimeSpan.Zero;
+                    if (spriteIndex < 3)
+                        spriteIndex++;
+                    else
+                        spriteIndex = 0;
+                }
+
+                switch (guardianSheet)
+                {
+                    case 0:
+                        spriteBatch.Draw(warlockSheet, new Vector2(guardianX, gameHeight - 100), guardianSpritePositions[spriteIndex], Color.White);
+                        break;
+                    case 1:
+                        spriteBatch.Draw(hunterSheet, new Vector2(guardianX, gameHeight - 100), guardianSpritePositions[spriteIndex], Color.White);
+                        break;
+                    case 2:
+                        spriteBatch.Draw(titanSheet, new Vector2(guardianX, gameHeight - 100), guardianSpritePositions[spriteIndex], Color.White);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
             int x = 0;
             foreach (var index in generatedLedge)
             {
@@ -472,36 +497,6 @@ namespace DestinyDescent
             spriteBatch.Draw(ledges[4], new Vector2(310, 160), Color.White);
             spriteBatch.Draw(ledges[3], new Vector2(358, 160), Color.White);
             spriteBatch.Draw(ledges[5], new Vector2(406, 160), Color.White);
-
-            if (guardianPresent && guardianSheet != null)
-            {
-                // Draws Guardians
-                spriteChange += gameTime.ElapsedGameTime;
-
-                if (spriteChange.TotalMilliseconds > 150)
-                {
-                    spriteChange = TimeSpan.Zero;
-                    if (spriteIndex < 3)
-                        spriteIndex++;
-                    else
-                        spriteIndex = 0;
-                }
-
-                switch (guardianSheet)
-                {
-                    case 0:
-                        spriteBatch.Draw(warlockSheet, new Vector2(guardianX, gameHeight-100), guardianSpritePositions[spriteIndex], Color.White);
-                        break;
-                    case 1:
-                        spriteBatch.Draw(hunterSheet, new Vector2(guardianX, gameHeight-100), guardianSpritePositions[spriteIndex], Color.White);
-                        break;
-                    case 2:
-                        spriteBatch.Draw(titanSheet, new Vector2(guardianX, gameHeight-100), guardianSpritePositions[spriteIndex], Color.White);
-                        break;
-                    default:
-                        break;
-                }
-            }
         }
         #endregion
         #endregion

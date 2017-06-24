@@ -41,6 +41,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Descent.cs" />
     <Compile Include="Entities\Ghost.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Guardian.cs" />

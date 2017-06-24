@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace DestinyDescent.Entities
 {
-    class Ledge : Entity
+    public class Ledge : Entity
     {
         #region Global Declarataions
         private int gapSize;
@@ -182,10 +182,7 @@ namespace DestinyDescent.Entities
         #region Ledge Off Screen
         public bool offScreen()
         {
-            if ((position.Y + ledgeHeight) < 0)
-                return true;
-
-            return false;
+            return ((position.Y + ledgeHeight) < 0);
         }
         #endregion
 
