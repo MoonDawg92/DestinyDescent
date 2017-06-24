@@ -202,6 +202,7 @@ namespace DestinyDescent.Entities
                 index++;
             }
 
+            //Become ledge-end
             position.X = endGap;
 
             for (int x = endGap; x < getGameWidth(); x += ledgeWidth)
