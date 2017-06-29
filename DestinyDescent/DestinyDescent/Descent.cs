@@ -52,7 +52,7 @@ namespace DestinyDescent
 
             scoreString = "Score: 0";
             boostString = "Ability Ready!";
-            versionString = "Pre-Alpha Version 1.2";
+            versionString = "Version 0.1";
             game.Window.Title = "Destiny Descent - " + scoreString;
 
             LoadContent();
@@ -80,7 +80,7 @@ namespace DestinyDescent
 
             scoreText = new Text(gameWidth, gameHeight, new Vector2(10, 10), game.Content.Load<SpriteFont>("Text/Score"), scoreColor);
             boostText = new Text(gameWidth, gameHeight, new Vector2(gameWidth - 325, 10), game.Content.Load<SpriteFont>("Text/Boost"), Color.Green);
-            versionText = new Text(gameWidth, gameHeight, new Vector2(gameWidth - 125, gameHeight - 20), game.Content.Load<SpriteFont>("Text/Version"), Color.Black);
+            versionText = new Text(gameWidth, gameHeight, new Vector2(gameWidth - 80, gameHeight - 20), game.Content.Load<SpriteFont>("Text/Version"), Color.CornflowerBlue);
 
             gameState = GameState.Playing;
 
@@ -127,7 +127,7 @@ namespace DestinyDescent
 
                 scoreText.Draw(spriteBatch, scoreString);
                 boostText.Draw(spriteBatch, boostString);
-                //versionText.Draw(spriteBatch, versionString);
+                versionText.Draw(spriteBatch, versionString);
             }
 
             base.Draw(gameTime);

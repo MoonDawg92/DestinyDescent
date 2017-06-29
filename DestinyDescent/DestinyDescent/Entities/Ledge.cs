@@ -39,6 +39,23 @@ namespace DestinyDescent.Entities
                 return new Rectangle(0, (int)(position.Y + (ledgeSize / 2)), getGameWidth(), ledgeSize);
             }
         }
+
+        private Rectangle LeftBoundingBox
+        {
+            get
+            {
+                return new Rectangle(0, (int)(position.Y + (ledgeSize / 2)), widthOne, ledgeSize);
+            }
+        }
+
+        private Rectangle RightBoundingBox
+        {
+            get
+            {
+                return new Rectangle(endGap, (int)(position.Y + (ledgeSize / 2)), widthTwo, ledgeSize);
+            }
+        }
+
         #endregion
 
         #region Constructor
@@ -156,17 +173,29 @@ namespace DestinyDescent.Entities
         #endregion
         #endregion
 
-        #region Gap Check
-        public bool gapCheck(int spriteWidth, float pos, bool boosting)
+        public bool Intersects(Rectangle rect)
         {
-            if (widthOne < pos && ((pos + spriteWidth) < endGap) && !boosting)
-            {
-                passedThrough = true;
-                return true;
-            }
-
-            return false;
+            bool val = LeftBoundingBox.Intersects(rect) || RightBoundingBox.Intersects(rect);
+            if (!val && (rect.Bottom - LeftBoundingBox.Top) > 10) passedThrough = true;
+            return val;
         }
+
+        public bool gapCheck()
+        {
+            return passedThrough;
+        }
+
+        #region Gap Check
+        //public bool gapCheck(int spriteWidth, float pos, bool boosting)
+        //{
+        //    if (widthOne < pos && ((pos + spriteWidth) < endGap) && !boosting)
+        //    {
+        //        passedThrough = true;
+        //        return true;
+        //    }
+
+        //    return false;
+        //}
         #endregion
 
         #region Move Ledge

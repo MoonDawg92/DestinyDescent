@@ -13,11 +13,11 @@ namespace DestinyDescent.Entities
 
         private int speedVar;
         private int gravityVar;
-        private int boostTimer;
-        private int boostCooldown;
+        private TimeSpan boostTimer;
+        private TimeSpan boostCooldown;
         private float velocity;
         private int index;
-        private int spriteChange;
+        private TimeSpan spriteChange;
         private int xMin;
         private int xMax;
 
@@ -34,6 +34,8 @@ namespace DestinyDescent.Entities
 
         private KeyboardState oldState;
         private List<Keys> keysPressed;
+
+        private bool gameOver;
         #endregion
 
         #region BoundingBox
@@ -53,11 +55,11 @@ namespace DestinyDescent.Entities
 
             speedVar = 500;
             gravityVar = 5;
-            boostTimer = 0;
-            boostCooldown = 0;
+            boostTimer = TimeSpan.Zero;
+            boostCooldown = TimeSpan.Zero;
             velocity = 0;
             index = 5;
-            spriteChange = 0;
+            spriteChange = TimeSpan.Zero;
             facingRight = true;
             boosting = false;
             boostReady = true;
@@ -66,11 +68,11 @@ namespace DestinyDescent.Entities
             guardianRight = new List<Rectangle>();
             keysPressed = new List<Keys>();
             oldState = Keyboard.GetState();
+            
+            LoadSpritePositions();
 
             xMin = 0;
-            xMax = getGameWidth() - getWidth();
-
-            LoadSpritePositions();
+            xMax = getGameWidth() - guardianLeft[0].Width;
 
             playerClass = pClass;
 
@@ -105,12 +107,6 @@ namespace DestinyDescent.Entities
         #endregion
 
         #region Get Functions
-        public int getWidth()
-        {
-            // Hard coded to 50 pixel sprite
-            return 50;
-        }
-
         #region Falling
         public bool isFalling()
         {
@@ -132,24 +128,10 @@ namespace DestinyDescent.Entities
         }
         #endregion
 
-        #region Get X
-        public float getX()
+        #region Guardian Down
+        public bool guardianDown()
         {
-            return position.X;
-        }
-        #endregion
-
-        #region Get Y
-        public float getY()
-        {
-            return position.Y;
-        }
-        #endregion
-
-        #region Get Bottom
-        public float getBottom()
-        {
-            return position.Y + guardianRight[0].Height;
+            return gameOver;
         }
         #endregion
         #endregion
@@ -164,6 +146,8 @@ namespace DestinyDescent.Entities
         #region Draw
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            if (gameOver) return;
+
             if (facingRight)
             {
                 if (boosting)
@@ -205,12 +189,12 @@ namespace DestinyDescent.Entities
             #region Boost Ready Logic
             if (!boostReady)
             {
-                boostCooldown += gameTime.ElapsedGameTime.Milliseconds;
+                boostCooldown += gameTime.ElapsedGameTime;
 
-                if (boostCooldown >= 7000)
+                if (boostCooldown.TotalMilliseconds >= 7000)
                 {
                     boostReady = true;
-                    boostCooldown = 0;
+                    boostCooldown = TimeSpan.Zero;
                 }
             }
             #endregion
@@ -218,7 +202,7 @@ namespace DestinyDescent.Entities
             #region Boosting
             if (boosting)
             {
-                boostTimer += gameTime.ElapsedGameTime.Milliseconds;
+                boostTimer += gameTime.ElapsedGameTime;
 
                 // Facing right
                 if (facingRight)
@@ -257,7 +241,7 @@ namespace DestinyDescent.Entities
                 }
 
                 // Boost depleted
-                if (boostTimer > 150)
+                if (boostTimer.TotalMilliseconds > 150)
                     boosting = false;
 
                 index = 5;
@@ -265,7 +249,7 @@ namespace DestinyDescent.Entities
                 if (!boosting)
                 {
                     index = 4;
-                    boostTimer = 0;
+                    boostTimer = TimeSpan.Zero;
                     boostReady = false;
                     speed.X = 0.0f;
                     keysPressed.Remove(Keys.Space);
@@ -322,21 +306,21 @@ namespace DestinyDescent.Entities
                             if (velocity > 0)
                                 facingRight = true;
                             else
-                                spriteChange--; // Doesn't change sprites while "sliding"
+                                spriteChange -= gameTime.ElapsedGameTime; // Doesn't change sprites while "sliding"
                         }
 
-                        spriteChange++;
+                        spriteChange += gameTime.ElapsedGameTime;
 
                         if (position.X > xMax)
                         {
                             speed.X = 0.0f;
                             position.X = xMax;
-                            spriteChange--;
+                            spriteChange -= gameTime.ElapsedGameTime;
                         }
 
-                        if (spriteChange > 4)
+                        if (spriteChange.TotalMilliseconds > 100)
                         {
-                            spriteChange = 0;
+                            spriteChange = TimeSpan.Zero;
 
                             if (index < 3)
                                 index++;
@@ -364,21 +348,21 @@ namespace DestinyDescent.Entities
                             if (velocity < 0)
                                 facingRight = false;
                             else
-                                spriteChange--; // Doesn't change sprites while "sliding"
+                                spriteChange -= gameTime.ElapsedGameTime; // Doesn't change sprites while "sliding"
                         }
 
-                        spriteChange++;
+                        spriteChange += gameTime.ElapsedGameTime;
 
                         if (position.X < xMin)
                         {
                             speed.X = 0.0f;
                             position.X = xMin;
-                            spriteChange--;
+                            spriteChange -= gameTime.ElapsedGameTime;
                         }
 
-                        if (spriteChange > 4)
+                        if (spriteChange.TotalMilliseconds > 100)
                         {
-                            spriteChange = 0;
+                            spriteChange = TimeSpan.Zero;
 
                             if (index < 3)
                                 index++;
@@ -421,6 +405,8 @@ namespace DestinyDescent.Entities
 
             // Update saved state.
             oldState = newState;
+
+            if (this.BoundingBox.Bottom < 0 || this.BoundingBox.Top > getGameHeight()) gameOver = true;
         }
         #endregion
 

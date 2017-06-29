@@ -18,8 +18,11 @@ namespace DestinyDescent
         private List<Ledge> ledges;
         private List<Texture2D> ledgeSprites;
         private TimeSpan newLedgeTimer;
+        private TimeSpan difficultyTimer;
         private int ledgeGenSpeed;
         private float speedVar;
+        private int difficulty;
+        private bool maxDifficulty;
 
         private int scoreInc;
 
@@ -35,9 +38,8 @@ namespace DestinyDescent
             guardian = player;
             ledges = new List<Ledge>();
             newLedgeTimer = new TimeSpan();
-            ledgeGenSpeed = 1500; // temporary
-            speedVar = 3.0f;
-            scoreInc = 0;
+            difficultyTimer = new TimeSpan();
+            increaseDifficulty();
 
             rand = r;
 
@@ -66,6 +68,48 @@ namespace DestinyDescent
             int score = scoreInc;
             scoreInc = 0;
             return score;
+        }
+
+        private void increaseDifficulty()
+        {
+            difficulty++;
+
+            switch (difficulty)
+            {
+                case 1:
+                    ledgeGenSpeed = 1500;
+                    speedVar = 2.5f;
+                    break;
+                case 2:
+                    ledgeGenSpeed = 1200;
+                    speedVar = 2.5f;
+                    break;
+                case 3:
+                    ledgeGenSpeed = 1200;
+                    speedVar = 3.0f;
+                    break;
+                case 4:
+                    ledgeGenSpeed = 1200;
+                    speedVar = 3.5f;
+                    break;
+                case 5:
+                    ledgeGenSpeed = 1000;
+                    speedVar = 3.5f;
+                    break;
+                case 6:
+                    ledgeGenSpeed = 900;
+                    speedVar = 4.0f;
+                    break;
+                case 7:
+                    ledgeGenSpeed = 800;
+                    speedVar = 4.5f;
+                    break;
+                default:
+                    maxDifficulty = true;
+                    break;
+            }
+
+            System.Diagnostics.Debug.WriteLine(difficulty);
         }
 
         #region Create New Ledge
@@ -100,6 +144,17 @@ namespace DestinyDescent
                 newLedgeTimer = TimeSpan.Zero;
             }
 
+            if (!maxDifficulty)
+            {
+                difficultyTimer += gameTime.ElapsedGameTime;
+
+                if (difficultyTimer.TotalMilliseconds > 15000)
+                {
+                    increaseDifficulty();
+                    difficultyTimer = TimeSpan.Zero;
+                }
+            }
+            
             if (ledges.Count != 0 && ledges[0].offScreen())
             {
                 Ledge oldLedge = ledges[0];
@@ -107,40 +162,45 @@ namespace DestinyDescent
                 oldLedge = null; // Dispose
             }
 
+            bool checkLedge = true;
             foreach (var ledge in ledges)
             {
-                if (!ledge.passed())
+                if (checkLedge && !ledge.passed() && !guardian.guardianDown())
                 {
-                    if (guardian.BoundingBox.Intersects(ledge.BoundingBox))
+                    if (ledge.Intersects(guardian.BoundingBox) || guardian.isBoosting())
                     {
-                        if (!ledge.gapCheck(guardian.getWidth(), guardian.getX(), guardian.isBoosting()))
+                        if (ledge.ghostCheck() && guardian.BoundingBox.Intersects(ledge.getGhost.BoundingBox) && !guardian.isBoosting())
                         {
-                            if (ledge.ghostCheck() && guardian.BoundingBox.Intersects(ledge.getGhost.BoundingBox) && !guardian.isBoosting())
-                            {
-                                ledge.grabGhost();
-                                scoreInc += 250;
-                            }
-
-                            guardian.toggleFalling(false);
+                            ledge.grabGhost();
+                            scoreInc += 250;
                         }
 
-                        else if (!guardian.isBoosting())
+                        if (guardian.isFalling())
+                        {
+                            guardian.toggleFalling(false);
+
+                            int movement = (ledge.BoundingBox.Top - guardian.BoundingBox.Bottom) * -1;
+                            guardian.moveGuardian(movement - 1.0f);
+                        }
+                    }
+                    else
+                    {
+                        guardian.toggleFalling(true);
+
+                        if (ledge.gapCheck())
                         {
                             scoreInc += 100;
-                            guardian.toggleFalling(true);
-
                         }
-
-                        float movement = (ledge.BoundingBox.Top - guardian.getBottom()) * -1;
-                        guardian.moveGuardian(movement - 1.0f);
-
-                        break;
                     }
+
+
+                    checkLedge = false;
                 }
 
                 ledge.moveLedge(speedVar);
-                if (!guardian.isFalling()) guardian.moveGuardian(speedVar);
             }
+
+            if (!guardian.isFalling()) guardian.moveGuardian(speedVar);
         }
         #endregion
 
